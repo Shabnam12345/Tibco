@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Created by TIBCO WSDL-->
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://xmlns.example.com/1134523930893" xmlns:ns0="http://xmlns.example.com/unique/default/namespace/1134438639123" xmlns:jms="http://www.tibco.com/namespaces/ws/2004/soap/binding/JMS" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:jndi="http://www.tibco.com/namespaces/ws/2004/soap/apis/jndi" targetNamespace="http://xmlns.example.com/1134523930893">
+    <wsdl:types>
+        <xsd:schema xmlns="http://xmlns.example.com/unique/default/namespace/1134438639123" xmlns:xsd="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://xmlns.example.com/unique/default/namespace/1134438639123">
+            <xsd:element name="cityDistances">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="fromCity">
+                            <xsd:complexType>
+                                <xsd:sequence>
+                                    <xsd:element ref="ns0:cityInfo"/>
+                                </xsd:sequence>
+                            </xsd:complexType>
+                        </xsd:element>
+                        <xsd:element name="toCity">
+                            <xsd:complexType>
+                                <xsd:sequence>
+                                    <xsd:element ref="ns0:cityInfo"/>
+                                </xsd:sequence>
+                            </xsd:complexType>
+                        </xsd:element>
+                        <xsd:element name="distance" type="xsd:decimal"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="cityInfo">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="city" type="xsd:string"/>
+                        <xsd:element name="state" type="xsd:string"/>
+                        <xsd:element name="location" type="xsd:string"/>
+                        <xsd:element name="latitude" type="xsd:decimal"/>
+                        <xsd:element name="longitude" type="xsd:decimal"/>
+                        <xsd:element name="zip" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="fromToZips">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element ref="ns0:fromZip"/>
+                        <xsd:element ref="ns0:toZip"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="fromZip" type="xsd:string"/>
+            <xsd:element name="toZip" type="xsd:string"/>
+        </xsd:schema>
+    </wsdl:types>
+    <wsdl:message name="cityInfoRequest">
+        <wsdl:part name="zip" type="xs:string"/>
+    </wsdl:message>
+    <wsdl:message name="cityInfoResponse">
+        <wsdl:part element="ns0:cityInfo" name="zipCode"/>
+    </wsdl:message>
+    <wsdl:message name="cityDistanceRequest">
+        <wsdl:part element="ns0:fromToZips" name="zips"/>
+    </wsdl:message>
+    <wsdl:message name="cityDistanceResponse">
+        <wsdl:part element="ns0:cityDistances" name="part1"/>
+    </wsdl:message>
+    <wsdl:portType name="ZipPort">
+        <wsdl:operation name="getCityInfo">
+            <wsdl:input message="tns:cityInfoRequest"/>
+            <wsdl:output message="tns:cityInfoResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="getCityDistance">
+            <wsdl:input message="tns:cityDistanceRequest"/>
+            <wsdl:output message="tns:cityDistanceResponse"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="ZipPortEndpoint1Binding" type="tns:ZipPort">
+        <soap:binding style="document" transport="http://www.tibco.com/namespaces/ws/2004/soap/binding/JMS"/>
+        <jms:binding messageFormat="bytes"/>
+        <wsdl:operation name="getCityInfo">
+            <soap:operation soapAction="/Service/ZipInfo-service1.serviceagent/ZipPortEndpoint1/getCityInfo" style="document"/>
+            <wsdl:input>
+                <soap:body parts="zip" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="zipCode" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getCityDistance">
+            <soap:operation soapAction="/Service/ZipInfo-service1.serviceagent/ZipPortEndpoint1/getCityDistance" style="document"/>
+            <wsdl:input>
+                <soap:body parts="zips" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="part1" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="ZipInfo-service1">
+        <wsdl:port binding="tns:ZipPortEndpoint1Binding" name="ZipPortEndpoint1">
+            <soap:address location=""/>
+            <jms:connectionFactory>QueueConnectionFactory</jms:connectionFactory>
+            <jms:targetAddress destination="queue">queue.sample</jms:targetAddress>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

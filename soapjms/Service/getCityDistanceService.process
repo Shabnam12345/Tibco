@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://xmlns.example.com/unique/default/namespace/1134438639123" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://webservices.imacination.com/distance/Distance.jws" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlPfx="http://zip.example.com">
+    <wsdl:import namespace="http://zip.example.com" location="/Service/ZipInfo.wsdl"/>
+    <pd:name>Service/getCityDistanceService.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType wsMsgRef="wsdlPfx:cityDistanceRequest"/>
+    <pd:startX>71</pd:startX>
+    <pd:startY>67</pd:startY>
+    <pd:returnBindings>
+        <wsdlPfx:cityDistanceResponse>
+            <part1>
+                <ns1:cityDistances>
+                    <ns1:fromCity>
+                        <ns1:cityInfo>
+                            <ns1:city>
+                                <xsl:value-of select="&quot;Urbana&quot;"/>
+                            </ns1:city>
+                            <ns1:state>
+                                <xsl:value-of select="&quot;Illinois&quot;"/>
+                            </ns1:state>
+                            <ns1:location>
+                                <xsl:value-of select="&quot;Urbana, Illinois, United States&quot;"/>
+                            </ns1:location>
+                            <ns1:latitude>
+                                <xsl:value-of select="40.110"/>
+                            </ns1:latitude>
+                            <ns1:longitude>
+                                <xsl:value-of select="88.207"/>
+                            </ns1:longitude>
+                            <ns1:zip>
+                                <xsl:value-of select="&quot;61801&quot;"/>
+                            </ns1:zip>
+                        </ns1:cityInfo>
+                    </ns1:fromCity>
+                    <ns1:toCity>
+                        <ns1:cityInfo>
+                            <ns1:city>
+                                <xsl:value-of select="&quot;Champaign&quot;"/>
+                            </ns1:city>
+                            <ns1:state>
+                                <xsl:value-of select="&quot;Illinois&quot;"/>
+                            </ns1:state>
+                            <ns1:location>
+                                <xsl:value-of select="&quot;Champaign, Illinois, United States&quot;"/>
+                            </ns1:location>
+                            <ns1:latitude>
+                                <xsl:value-of select="40.140"/>
+                            </ns1:latitude>
+                            <ns1:longitude>
+                                <xsl:value-of select="88.196"/>
+                            </ns1:longitude>
+                            <ns1:zip>
+                                <xsl:value-of select="61820"/>
+                            </ns1:zip>
+                        </ns1:cityInfo>
+                    </ns1:toCity>
+                    <ns1:distance>
+                        <xsl:value-of select="4"/>
+                    </ns1:distance>
+                </ns1:cityDistances>
+            </part1>
+        </wsdlPfx:cityDistanceResponse>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType wsMsgRef="wsdlPfx:cityDistanceResponse"/>
+    <pd:endX>373</pd:endX>
+    <pd:endY>67</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1260957339175</pd:targetNamespace>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

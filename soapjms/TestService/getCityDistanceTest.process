@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://xmlns.example.com/unique/default/namespace/1134438639123" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:pfx="http://xmlns.example.com/1134523930893">
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://xmlns.example.com/unique/default/namespace/1134438639123" schemaLocation="/Service/CitySchema.xsd"/>
+    <wsdl:import namespace="http://xmlns.example.com/1134523930893" location="/TestService/ConcreteZipService.wsdl"/>
+    <pd:name>TestService/getCityDistanceTest.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startX>150</pd:startX>
+    <pd:startY>64</pd:startY>
+    <pd:returnBindings>
+        <xsl:copy-of select="$SOAPRequestReply/outputMessage/ns:cityDistances"/>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="ns:cityDistances"/>
+    <pd:endX>450</pd:endX>
+    <pd:endY>64</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1260957323019</pd:targetNamespace>
+    <pd:activity name="SOAPRequestReply">
+        <pd:type>com.tibco.plugin.soap.SOAPSendReceiveActivity</pd:type>
+        <pd:resourceType>ae.activities.SOAPSendReceiveUI</pd:resourceType>
+        <pd:x>289</pd:x>
+        <pd:y>64</pd:y>
+        <config>
+            <timeout>0</timeout>
+            <service>pfx:ZipInfo-service1</service>
+            <servicePort>ZipPortEndpoint1</servicePort>
+            <operation>getCityDistance</operation>
+            <soapAction>/Service/ZipInfo-service1.serviceagent/ZipPortEndpoint1/getCityDistance</soapAction>
+            <endpointURL>http://localhost:9090/Service/ZipInfo-service1.serviceagent/ZipPortEndpoint1</endpointURL>
+            <sharedChannels>
+                <jmsChannel>
+                    <JMSTo>queue.sample</JMSTo>
+                    <JMSPassword/>
+                    <NamingInitialContextFactory>com.tibco.tibjms.naming.TibjmsInitialContextFactory</NamingInitialContextFactory>
+                    <JMSMessageType>Bytes</JMSMessageType>
+                    <JMSNamingValidateSecurityContext>true</JMSNamingValidateSecurityContext>
+                    <NamingURL>tibjmsnaming://localhost:7222</NamingURL>
+                    <NamingPrincipal>admin</NamingPrincipal>
+                    <NamingCredential/>
+                    <ConnectionFactory>QueueConnectionFactory</ConnectionFactory>
+                    <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                    <JMSPriority>4</JMSPriority>
+                    <JMSTimeToLive>0</JMSTimeToLive>
+                    <JMSUserName>admin</JMSUserName>
+                    <shareJms>true</shareJms>
+                </jmsChannel>
+            </sharedChannels>
+            <soapAttachmentStyle>SwA</soapAttachmentStyle>
+            <ConnectionReference>/Service/JMS Connection.sharedjmscon</ConnectionReference>
+        </config>
+        <pd:inputBindings>
+            <inputMessage>
+                <ns:fromToZips>
+                    <ns:fromZip>
+                        <xsl:value-of select="&quot;61801&quot;"/>
+                    </ns:fromZip>
+                    <ns:toZip>
+                        <xsl:value-of select="&quot;61820&quot;"/>
+                    </ns:toZip>
+                </ns:fromToZips>
+            </inputMessage>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>SOAPRequestReply</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SOAPRequestReply</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>
